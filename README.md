@@ -1,6 +1,6 @@
 ## Project Bug Tracker
-Track your project bugs. <\n>
-This is a work in progress, the final product may differ.
+Track your project bugs.
+>This is a work in progress, the final product may differ.
 
 
 * #### Login.
