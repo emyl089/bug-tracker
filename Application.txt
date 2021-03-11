@@ -1,0 +1,13 @@
+SYSTEM REQUIREMENTS:
+	- New entry (add new discovered bug);
+	- Dashboard (show statistics);
+	- Issues (show all bugs and their informations);
+	- Admin (administrate bugs);
+	
+SYSTEM ENGINEERING:
+	- Design Pattern;
+	- Clean UI;
+	- CRUD Functionality;
+	- Authentication & Authorization;
+	- Database;
+

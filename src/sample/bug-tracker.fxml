@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1024.0" style="-fx-background-color: #e6e9ed;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.BugTrackerController">
+   <children>
+      <AnchorPane prefHeight="50.0" prefWidth="1024.0" style="-fx-background-color: #4287f5;">
+         <children>
+            <Button focusTraversable="false" layoutX="150.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="50.0" stylesheets="@button-header.css" text="Feed" />
+            <Button focusTraversable="false" layoutX="200.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="75.0" stylesheets="@button-header.css" text="Projects" />
+            <Line endX="176.0" endY="48.0" fill="#ededed" layoutX="100.0" layoutY="1.0" opacity="0.5" startX="176.0" stroke="#ededed" />
+            <ImageView fx:id="applicationImageView" fitHeight="40.0" fitWidth="40.0" layoutX="25.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" rotate="20.0">
+               <image>
+                  <Image url="@../../images/bug-tracker/bug.png" />
+               </image>
+            </ImageView>
+            <Button focusTraversable="false" layoutX="100.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="50.0" stylesheets="@button-header.css" text="Home" />
+            <Button fx:id="closeButton" layoutX="979.0" layoutY="10.0" mnemonicParsing="false" onAction="#closeButtonOnAction" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: transparent; -fx-background-radius: 30px;" textFill="RED" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="7.0">
+               <font>
+                  <Font name="Arial Black" size="12.0" />
+               </font>
+               <graphic>
+                  <ImageView fx:id="closeImageView" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/bug-tracker/x.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutY="50.0" prefHeight="590.0" prefWidth="100.0" style="-fx-background-color: #0d1c33;">
+         <children>
+            <Button alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" stylesheets="@button-side-panel.css" text="Dashboard" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Button alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutY="100.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" stylesheets="@button-side-panel.css" text="New Entry" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="100.0" />
+            <Button alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutY="200.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" stylesheets="@button-side-panel.css" text="Issue" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="200.0" />
+            <Button alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutY="295.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" stylesheets="@button-side-panel.css" text="Admin" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="300.0" />
+         </children>
+      </AnchorPane>
+      <ScrollPane focusTraversable="false" hbarPolicy="NEVER" layoutX="100.0" layoutY="50.0" prefWidth="922.0" style="-fx-background-color: #e6e9ed;" vbarPolicy="ALWAYS" vvalue="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+        <content>
+          <AnchorPane prefHeight="770.0" prefWidth="920.0" style="-fx-background-color: #e6e9ed;">
+               <children>
+                  <AnchorPane layoutX="26.0" layoutY="100.0" prefHeight="300.0" prefWidth="250.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="26.0" AnchorPane.topAnchor="100.0">
+                     <children>
+                        <Label layoutX="10.0" layoutY="10.0" text="Issues Status">
+                           <font>
+                              <Font name="Arial Black" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="10.0" layoutY="40.0" text="Keep track of the issues affected.">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Button alignment="CENTER" layoutX="150.0" layoutY="10.0" mnemonicParsing="false" prefHeight="15.0" prefWidth="15.0" stylesheets="@button-refresh.css">
+                           <graphic>
+                              <ImageView fx:id="issuesRefreshImageView" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../images/bug-tracker/refresh.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Label layoutX="40.0" layoutY="250.0" text="Open" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="250.0" />
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="107.0" layoutY="250.0" text="Closed" AnchorPane.leftAnchor="107.0" AnchorPane.rightAnchor="107.0" AnchorPane.topAnchor="250.0" />
+                        <Label layoutX="210.0" layoutY="250.0" text="Total" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="250.0" />
+                        <Label layoutX="47.0" layoutY="271.0" text="18" textFill="#80ea3a" AnchorPane.leftAnchor="47.0" AnchorPane.topAnchor="271.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="117.0" layoutY="271.0" text="12" textFill="#2193eb" AnchorPane.leftAnchor="117.0" AnchorPane.topAnchor="271.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="189.0" layoutY="271.0" text="30" AnchorPane.leftAnchor="189.0" AnchorPane.topAnchor="271.0">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <PieChart fx:id="issuesChart" labelsVisible="false" layoutX="26.0" layoutY="64.0" legendVisible="false" prefHeight="185.0" prefWidth="200.0" stylesheets="@pie-chart.css" AnchorPane.leftAnchor="26.0" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="64.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane layoutX="328.0" layoutY="100.0" prefHeight="300.0" prefWidth="250.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="328.0" AnchorPane.rightAnchor="328.0" AnchorPane.topAnchor="100.0">
+                     <children>
+                        <Label layoutX="10.0" layoutY="10.0" text="Milestone Status">
+                           <font>
+                              <Font name="Arial Black" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="10.0" layoutY="40.0" text="Keep track of milestones.">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Button alignment="CENTER" layoutX="180.0" layoutY="10.0" mnemonicParsing="false" prefHeight="15.0" prefWidth="15.0" stylesheets="@button-refresh.css">
+                           <graphic>
+                              <ImageView fx:id="milestoneRefreshImageView" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../images/bug-tracker/refresh.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Label layoutX="41.0" layoutY="257.0" text="Open" />
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="108.0" layoutY="257.0" text="Closed" />
+                        <Label layoutX="185.0" layoutY="257.0" text="Total" />
+                        <Label layoutX="48.0" layoutY="278.0" text="18" textFill="#80ea3a">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="118.0" layoutY="278.0" text="12" textFill="#2193eb">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="190.0" layoutY="278.0" text="30">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <PieChart fx:id="milestoneChart" labelsVisible="false" layoutX="25.0" layoutY="62.0" legendVisible="false" prefHeight="185.0" prefWidth="200.0" stylesheets="@pie-chart.css" AnchorPane.leftAnchor="26.0" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="64.0" />
+                     </children></AnchorPane>
+                  <AnchorPane layoutX="630.0" layoutY="100.0" prefHeight="300.0" prefWidth="250.0" style="-fx-background-color: white;" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="100.0">
+                     <children>
+                        <Label layoutX="10.0" layoutY="10.0" text="Top 5 Issues Fixers">
+                           <font>
+                              <Font name="Arial Black" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="10.0" layoutY="40.0" text="Users with maximum closed issues.">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Button alignment="CENTER" layoutX="205.0" layoutY="10.0" mnemonicParsing="false" prefHeight="15.0" prefWidth="15.0" stylesheets="@button-refresh.css">
+                           <graphic>
+                              <ImageView fx:id="topFixersRefreshImageView" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../images/bug-tracker/refresh.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <VBox layoutX="25.0" layoutY="70.0" prefHeight="220.0" prefWidth="100.0">
+                           <children>
+                              <AnchorPane prefHeight="50.0" prefWidth="210.0">
+                                 <children>
+                                     <Label layoutX="5.0" layoutY="5.0" prefHeight="40.0" prefWidth="150.0" style="-fx-padding:10;" text="John Wick" />
+                                    <Label layoutX="190.0" layoutY="5.0" prefHeight="40.0" prefWidth="10.0" text="5" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane prefHeight="50.0" prefWidth="210.0">
+                                 <children>
+                                    <Label layoutX="5.0" layoutY="5.0" prefHeight="40.0" prefWidth="150.0" style="-fx-padding:10;" text="Neo Anderson" />
+                                    <Label layoutX="190.0" layoutY="5.0" prefHeight="40.0" prefWidth="10.0" text="3" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane prefHeight="50.0" prefWidth="210.0">
+                                 <children>
+                                    <Label layoutX="5.0" layoutY="5.0" prefHeight="40.0" prefWidth="150.0" style="-fx-padding:10;" text="Tony Stark" />
+                                    <Label layoutX="190.0" layoutY="5.0" prefHeight="40.0" prefWidth="10.0" text="2" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane prefHeight="50.0" prefWidth="210.0">
+                                 <children>
+                                    <Label layoutX="5.0" layoutY="5.0" prefHeight="40.0" prefWidth="150.0" style="-fx-padding:10;" text="Thor Odinson" />
+                                    <Label layoutX="190.0" layoutY="5.0" prefHeight="40.0" prefWidth="10.0" text="2" />
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </VBox>
+                     </children></AnchorPane>
+                  <AnchorPane layoutX="26.0" layoutY="450.0" prefHeight="300.0" prefWidth="568.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="26.0" AnchorPane.topAnchor="450.0">
+                     <children>
+                        <Label layoutX="10.0" layoutY="10.0" text="Weekly Digest">
+                           <font>
+                              <Font name="Arial Black" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="10.0" layoutY="40.0" text="Select a week to view its overall status.">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Button alignment="CENTER" layoutX="160.0" layoutY="10.0" mnemonicParsing="false" prefHeight="15.0" prefWidth="15.0" stylesheets="@button-refresh.css">
+                           <graphic>
+                              <ImageView fx:id="weeklyRefreshImageView" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../images/bug-tracker/refresh.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <BarChart fx:id="barChart" horizontalGridLinesVisible="false" layoutX="14.0" layoutY="72.0" legendSide="RIGHT" prefHeight="200.0" prefWidth="500.0" verticalGridLinesVisible="false">
+                          <xAxis>
+                            <CategoryAxis side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis side="LEFT" />
+                          </yAxis>
+                        </BarChart>
+                     </children></AnchorPane>
+                  <ProgressIndicator layoutX="30.0" layoutY="25.0" progress="0.0" />
+                  <Label layoutX="70.0" layoutY="20.0" text="PR-1:" textFill="#575757" />
+                  <Label layoutX="120.0" layoutY="16.0" text="Bug Tracker Project">
+                     <font>
+                        <Font name="Arial Black" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="70.0" layoutY="50.0" text="Owner:" textFill="#575757" />
+                  <Label layoutX="120.0" layoutY="51.0" text="Popescu Emanuel - Gavril">
+                     <font>
+                        <Font name="Arial Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="550.0" layoutY="20.0" text="Start Date" textFill="#575757" />
+                  <Label layoutX="650.0" layoutY="20.0" text="Due Date" textFill="#575757" />
+                  <Label layoutX="750.0" layoutY="20.0" text="Time Lag" textFill="#575757" />
+                  <Label layoutX="550.0" layoutY="50.0" text="11-03-2021">
+                     <font>
+                        <Font name="Arial Black" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="650.0" layoutY="50.0" text="21-03-2021">
+                     <font>
+                        <Font name="Arial Black" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="750.0" layoutY="50.0" text="Delayed by 0 Days" textFill="#d71717">
+                     <font>
+                        <Font name="Arial Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>
