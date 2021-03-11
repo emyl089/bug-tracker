@@ -1,5 +1,5 @@
 ## Project Bug Tracker
-Track your project bugs.
+Track your project bugs. <\n>
 This is a work in progress, the final product may differ.
 
 
