@@ -1,6 +1,7 @@
 package sample;
 
 import javafx.beans.Observable;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -9,7 +10,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -23,7 +25,15 @@ import java.util.ResourceBundle;
 public class BugTrackerController implements Initializable {
 
     @FXML
+    private Button dashboardButton;
+    @FXML
+    private Button issuesButton;
+    @FXML
     private Button closeButton;
+    @FXML
+    private ScrollPane dashboardScrollpane;
+    @FXML
+    private ScrollPane issuesScrollpane;
     @FXML
     private ImageView applicationImageView;
     @FXML
@@ -42,10 +52,53 @@ public class BugTrackerController implements Initializable {
     private PieChart milestoneChart;
     @FXML
     private BarChart barChart;
+    @FXML
+    private TableView issuesTableView;
+    @FXML
+    private TableColumn issuesTableColumn;
+    @FXML
+    private TableColumn createdTableColumn;
+    @FXML
+    private TableColumn reporterTableColumn;
+    @FXML
+    private TableColumn dueTableColumn;
+    @FXML
+    private TableColumn statusTableColumn;
+    @FXML
+    private TableColumn severityTableColumn;
+    @FXML
+    private TableColumn reproducibleTableColumn;
 
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        initiateImages();
+        initiateIssuesPieChart();
+        initiateMilestonePieChart();
+        initiateBarChart();
+        initiateTable();
+    }
+
+    //Action when dashboardButton is pressed.
+    public void dashboardButtonOnAction() {
+        dashboardScrollpane.setVisible(true);
+        issuesScrollpane.setVisible(false);
+    }
+
+    //Action when issuesButton is pressed.
+    public void issuesButtonOnAction() {
+        dashboardScrollpane.setVisible(false);
+        issuesScrollpane.setVisible(true);
+    }
+
+    //Action when closeButton is pressed.
+    public void closeButtonOnAction() {
+        Stage stage = (Stage) closeButton.getScene().getWindow();
+        stage.close();
+    }
+
+    //Initializations
+    public void initiateImages() {
         File applicationImageFile = new File("images/bug-tracker/bug.png");
         Image applicationImageIcon = new Image(applicationImageFile.toURI().toString());
         applicationImageView.setImage(applicationImageIcon);
@@ -60,19 +113,22 @@ public class BugTrackerController implements Initializable {
         milestoneRefreshImageView.setImage(issuesRefreshImageIcon);
         topFixersRefreshImageView.setImage(issuesRefreshImageIcon);
         weeklyRefreshImageView.setImage(issuesRefreshImageIcon);
-
+    }
+    public void initiateIssuesPieChart() {
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
                 new PieChart.Data("Open", 18),
                 new PieChart.Data("Closed", 12)
         );
         issuesChart.setData(pieChartData);
-
+    }
+    public void initiateMilestonePieChart() {
         ObservableList<PieChart.Data> milestoneChartData = FXCollections.observableArrayList(
                 new PieChart.Data("Open", 15),
                 new PieChart.Data("Closed", 5)
         );
         milestoneChart.setData(milestoneChartData);
-
+    }
+    public void initiateBarChart() {
         CategoryAxis xAxis = new CategoryAxis();
         NumberAxis yAxis = new NumberAxis();
         xAxis.setLabel("Number of Items");
@@ -106,10 +162,51 @@ public class BugTrackerController implements Initializable {
         barChart.getData().addAll(series2);
         barChart.getData().addAll(series3);
     }
+    //-----------------------------
+    // Initiate Issues Table
+    //-----------------------------
+    public void initiateTable() {
+        //Add rows to the Table View
+        issuesTableView.getItems().addAll(getIssuesList());
+        //Add columns to the Table View
+        getIssuesData();
+        //Set placeholder for empty table
+        issuesTableView.setPlaceholder(new Label("No visible columns and/or data exist."));
+    }
+    //Returns an observable list of Issues
+    public static ObservableList<Issues> getIssuesList()
+    {
+        ObservableList<Issues> issues = FXCollections.observableArrayList();
 
-    //Action when closeButton is pressed.
-    public void closeButtonOnAction() {
-        Stage stage = (Stage) closeButton.getScene().getWindow();
-        stage.close();
+        issues.add(new Issues("Feed Issue","12-03-2021","John Wick","14-03-2021","In Progress","Major","Always"));
+        issues.add(new Issues("Logistic Delay","10-03-2021","Tony Stark","21-03-2021","Open","Minor","Always"));
+        issues.add(new Issues("UI Not Responding","11-03-2021","Thor Odinson","13-03-2021","In Progress","Critical","Sometimes"));
+
+        return issues;
+    }
+    //Returns Issue Name TableColumn
+    public void getIssuesData()
+    {
+        issuesTableColumn.setCellValueFactory(
+                new PropertyValueFactory<Issues, SimpleStringProperty>("issueName")
+        );
+        createdTableColumn.setCellValueFactory(
+                new PropertyValueFactory<Issues, String>("createTime")
+        );
+        reporterTableColumn.setCellValueFactory(
+                new PropertyValueFactory<Issues, String>("reporterName")
+        );
+        dueTableColumn.setCellValueFactory(
+                new PropertyValueFactory<Issues, String>("dueTime")
+        );
+        statusTableColumn.setCellValueFactory(
+                new PropertyValueFactory<Issues, String>("status")
+        );
+        severityTableColumn.setCellValueFactory(
+                new PropertyValueFactory<Issues, String>("severity")
+        );
+        reproducibleTableColumn.setCellValueFactory(
+                new PropertyValueFactory<Issues, String>("reproducible")
+        );
     }
 }

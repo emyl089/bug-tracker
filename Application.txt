@@ -11,3 +11,39 @@ SYSTEM ENGINEERING:
 	- Authentication & Authorization;
 	- Database;
 
+APPLICATION CSS:
+	- Header: 
+		- buttons:
+			- background = transparent
+			- size = 12
+			- text color = #ededed
+		- buttons.hover:
+			- color = #244e8f
+		- buttons.pressed:
+			- color = #0d1c33
+			- text color = white
+	- Side bar
+		-buttons:
+			- background = transparent
+			- size = 12
+			- text color = #ededed
+		- buttons.hover:
+			- color = #060c17
+		- buttons.pressed:
+			- color = black
+			- text color = white
+	- Title
+		- label:
+			- text = arial black
+			- text size = 18px
+			- text color = black
+	- Subtitle
+		- label:
+			- text = arial (bold)
+			- text size = 14px
+			- text color = black
+	- Details
+		- label:
+			- text = System
+			- text size = 12px
+			- text color = #575757
