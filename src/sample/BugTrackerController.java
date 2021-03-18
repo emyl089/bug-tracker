@@ -1,6 +1,8 @@
 package sample;
 
 import javafx.beans.Observable;
+import javafx.beans.property.ReadOnlyIntegerWrapper;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -53,21 +55,21 @@ public class BugTrackerController implements Initializable {
     @FXML
     private BarChart barChart;
     @FXML
-    private TableView issuesTableView;
+    private TableView<Issues> issuesTableView;
     @FXML
-    private TableColumn issuesTableColumn;
+    private TableColumn<Issues, String> issuesTableColumn;
     @FXML
-    private TableColumn createdTableColumn;
+    private TableColumn<Issues, String> createdTableColumn;
     @FXML
-    private TableColumn reporterTableColumn;
+    private TableColumn<Issues, String> reporterTableColumn;
     @FXML
-    private TableColumn dueTableColumn;
+    private TableColumn<Issues, String> dueTableColumn;
     @FXML
-    private TableColumn statusTableColumn;
+    private TableColumn<Issues, String> statusTableColumn;
     @FXML
-    private TableColumn severityTableColumn;
+    private TableColumn<Issues, String> severityTableColumn;
     @FXML
-    private TableColumn reproducibleTableColumn;
+    private TableColumn<Issues, String> reproducibleTableColumn;
 
 
     @Override
@@ -77,27 +79,44 @@ public class BugTrackerController implements Initializable {
         initiateMilestonePieChart();
         initiateBarChart();
         initiateTable();
+
+        //Add columns to the Table View
+        issuesTableColumn.setCellValueFactory(cellData -> cellData.getValue().issueNameProperty());
+        createdTableColumn.setCellValueFactory(cellData -> cellData.getValue().createTimeProperty());
+        reporterTableColumn.setCellValueFactory(cellData -> cellData.getValue().reporterNameProperty());
+        dueTableColumn.setCellValueFactory(cellData -> cellData.getValue().dueTimeProperty());
+        statusTableColumn.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
+        severityTableColumn.setCellValueFactory(cellData -> cellData.getValue().severityProperty());
+        reproducibleTableColumn.setCellValueFactory(cellData -> cellData.getValue().reproducibleProperty());
     }
 
+    //-----------------------------
     //Action when dashboardButton is pressed.
+    //-----------------------------
     public void dashboardButtonOnAction() {
         dashboardScrollpane.setVisible(true);
         issuesScrollpane.setVisible(false);
     }
 
+    //-----------------------------
     //Action when issuesButton is pressed.
+    //-----------------------------
     public void issuesButtonOnAction() {
         dashboardScrollpane.setVisible(false);
         issuesScrollpane.setVisible(true);
     }
 
+    //-----------------------------
     //Action when closeButton is pressed.
+    //-----------------------------
     public void closeButtonOnAction() {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
     }
 
+    //-----------------------------
     //Initializations
+    //-----------------------------
     public void initiateImages() {
         File applicationImageFile = new File("images/bug-tracker/bug.png");
         Image applicationImageIcon = new Image(applicationImageFile.toURI().toString());
@@ -168,12 +187,12 @@ public class BugTrackerController implements Initializable {
     public void initiateTable() {
         //Add rows to the Table View
         issuesTableView.getItems().addAll(getIssuesList());
-        //Add columns to the Table View
-        getIssuesData();
         //Set placeholder for empty table
         issuesTableView.setPlaceholder(new Label("No visible columns and/or data exist."));
     }
+    //-----------------------------
     //Returns an observable list of Issues
+    //-----------------------------
     public static ObservableList<Issues> getIssuesList()
     {
         ObservableList<Issues> issues = FXCollections.observableArrayList();
@@ -183,30 +202,5 @@ public class BugTrackerController implements Initializable {
         issues.add(new Issues("UI Not Responding","11-03-2021","Thor Odinson","13-03-2021","In Progress","Critical","Sometimes"));
 
         return issues;
-    }
-    //Returns Issue Name TableColumn
-    public void getIssuesData()
-    {
-        issuesTableColumn.setCellValueFactory(
-                new PropertyValueFactory<Issues, SimpleStringProperty>("issueName")
-        );
-        createdTableColumn.setCellValueFactory(
-                new PropertyValueFactory<Issues, String>("createTime")
-        );
-        reporterTableColumn.setCellValueFactory(
-                new PropertyValueFactory<Issues, String>("reporterName")
-        );
-        dueTableColumn.setCellValueFactory(
-                new PropertyValueFactory<Issues, String>("dueTime")
-        );
-        statusTableColumn.setCellValueFactory(
-                new PropertyValueFactory<Issues, String>("status")
-        );
-        severityTableColumn.setCellValueFactory(
-                new PropertyValueFactory<Issues, String>("severity")
-        );
-        reproducibleTableColumn.setCellValueFactory(
-                new PropertyValueFactory<Issues, String>("reproducible")
-        );
     }
 }
