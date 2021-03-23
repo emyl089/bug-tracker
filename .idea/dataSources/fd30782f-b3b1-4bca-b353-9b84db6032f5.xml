@@ -912,106 +912,164 @@ SELECT|sys.sys_config
       <ObjectGrants>SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,RELOAD,SHUTDOWN,PROCESS,FILE,REFERENCES,INDEX,ALTER,SHOW DATABASES,SUPER,CREATE TEMPORARY TABLES,LOCK TABLES,EXECUTE,REPLICATION SLAVE,REPLICATION CLIENT,CREATE VIEW,SHOW VIEW,CREATE ROUTINE,ALTER ROUTINE,CREATE USER,EVENT,TRIGGER,CREATE TABLESPACE,CREATE ROLE,DROP ROLE!
 </ObjectGrants>
     </user>
-    <table id="285" parent="3" name="user_account"/>
-    <table id="286" parent="3" name="user_info"/>
-    <column id="287" parent="285" name="account_id">
+    <table id="285" parent="3" name="issues"/>
+    <table id="286" parent="3" name="user_account"/>
+    <table id="287" parent="3" name="user_info"/>
+    <column id="288" parent="285" name="id_issue">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="288" parent="285" name="username">
+    <column id="289" parent="285" name="issue_name">
+      <Position>2</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;No Name&apos;</DefaultExpression>
+    </column>
+    <column id="290" parent="285" name="create_time">
+      <Position>3</Position>
+      <DataType>timestamp|0s</DataType>
+      <DefaultExpression>(CURRENT_TIMESTAMP)</DefaultExpression>
+    </column>
+    <column id="291" parent="285" name="reporter_name">
+      <Position>4</Position>
+      <DataType>varchar(45)|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;No Reporter Name&apos;</DefaultExpression>
+    </column>
+    <column id="292" parent="285" name="due_time">
+      <Position>5</Position>
+      <DataType>date|0s</DataType>
+    </column>
+    <column id="293" parent="285" name="status">
+      <Position>6</Position>
+      <DataType>varchar(45)|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;No Status&apos;</DefaultExpression>
+    </column>
+    <column id="294" parent="285" name="severity">
+      <Position>7</Position>
+      <DataType>varchar(45)|0s</DataType>
+      <DefaultExpression>&apos;No Severity&apos;</DefaultExpression>
+    </column>
+    <column id="295" parent="285" name="reproducible">
+      <Position>8</Position>
+      <DataType>varchar(45)|0s</DataType>
+      <DefaultExpression>&apos;No Reproducible&apos;</DefaultExpression>
+    </column>
+    <index id="296" parent="285" name="id_issues_UNIQUE">
+      <ColNames>id_issue</ColNames>
+      <Unique>1</Unique>
+      <Type>btree</Type>
+    </index>
+    <key id="297" parent="285" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id_issue</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <key id="298" parent="285" name="id_issues_UNIQUE">
+      <ColNames>id_issue</ColNames>
+      <UnderlyingIndexName>id_issues_UNIQUE</UnderlyingIndexName>
+    </key>
+    <column id="299" parent="286" name="account_id">
+      <Position>1</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="300" parent="286" name="username">
       <Position>2</Position>
       <DataType>varchar(16)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="289" parent="285" name="password">
+    <column id="301" parent="286" name="password">
       <Position>3</Position>
       <DataType>varchar(32)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="290" parent="285" name="email">
+    <column id="302" parent="286" name="email">
       <Position>4</Position>
       <DataType>varchar(45)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="291" parent="285" name="account_id_UNIQUE">
+    <index id="303" parent="286" name="account_id_UNIQUE">
       <ColNames>account_id</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <index id="292" parent="285" name="username_UNIQUE">
+    <index id="304" parent="286" name="username_UNIQUE">
       <ColNames>username</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <index id="293" parent="285" name="email_UNIQUE">
+    <index id="305" parent="286" name="email_UNIQUE">
       <ColNames>email</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="294" parent="285" name="PRIMARY">
+    <key id="306" parent="286" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>account_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="295" parent="285" name="account_id_UNIQUE">
+    <key id="307" parent="286" name="account_id_UNIQUE">
       <ColNames>account_id</ColNames>
       <UnderlyingIndexName>account_id_UNIQUE</UnderlyingIndexName>
     </key>
-    <key id="296" parent="285" name="username_UNIQUE">
+    <key id="308" parent="286" name="username_UNIQUE">
       <ColNames>username</ColNames>
       <UnderlyingIndexName>username_UNIQUE</UnderlyingIndexName>
     </key>
-    <key id="297" parent="285" name="email_UNIQUE">
+    <key id="309" parent="286" name="email_UNIQUE">
       <ColNames>email</ColNames>
       <UnderlyingIndexName>email_UNIQUE</UnderlyingIndexName>
     </key>
-    <column id="298" parent="286" name="iduser">
+    <column id="310" parent="287" name="iduser">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="299" parent="286" name="firstname">
+    <column id="311" parent="287" name="firstname">
       <Position>2</Position>
       <DataType>varchar(32)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="300" parent="286" name="lastname">
+    <column id="312" parent="287" name="lastname">
       <Position>3</Position>
       <DataType>varchar(32)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="301" parent="286" name="phone_number">
+    <column id="313" parent="287" name="phone_number">
       <Position>4</Position>
       <DataType>varchar(16)|0s</DataType>
       <DefaultExpression>&apos;Not specified.&apos;</DefaultExpression>
     </column>
-    <column id="302" parent="286" name="gender">
+    <column id="314" parent="287" name="gender">
       <Position>5</Position>
       <DataType>varchar(6)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="303" parent="286" name="create_time">
+    <column id="315" parent="287" name="create_time">
       <Position>6</Position>
       <DataType>timestamp|0s</DataType>
-      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
+      <DefaultExpression>(CURRENT_TIMESTAMP)</DefaultExpression>
     </column>
-    <column id="304" parent="286" name="account_id">
+    <column id="316" parent="287" name="account_id">
       <Position>7</Position>
       <DataType>int|0s</DataType>
     </column>
-    <index id="305" parent="286" name="account_id_idx">
+    <index id="317" parent="287" name="account_id_idx">
       <ColNames>account_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="306" parent="286" name="PRIMARY">
+    <key id="318" parent="287" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>iduser</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="307" parent="286" name="account_id">
+    <foreign-key id="319" parent="287" name="account_id">
       <ColNames>account_id</ColNames>
       <RefTableName>user_account</RefTableName>
       <RefColNames>account_id</RefColNames>

@@ -4,7 +4,7 @@
     -fx-background-radius: 5;
     -fx-background-color:  #4287f5;
     -fx-font-family:"Segoe UI", Helvetica, Arial, sans-serif;
-    -fx-font-size: 12
+    -fx-font-size: 12;
     -fx-font-weight: 400;
     -fx-text-fill: #ededed;
 }
@@ -21,6 +21,33 @@
 }
 
 .button:pressed {
+    -fx-background-color:  #0d1c33;
+    -fx-text-fill: white;
+}
+
+#newEntryCancelButton {
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 5;
+    -fx-background-color:  #ededed;
+    -fx-font-family:"Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 12;
+    -fx-font-weight: 400;
+    -fx-text-fill: black;
+}
+
+#newEntryCancelButton:hover{
+    -fx-background-color: #4287f5;
+}
+
+#newEntryCancelButton:focused {
+    -fx-border-color: transparent, black;
+    -fx-border-width: 0;
+    -fx-border-style: solid;
+    -fx-border-radius: 5;
+}
+
+#newEntryCancelButton:pressed {
     -fx-background-color:  #0d1c33;
     -fx-text-fill: white;
 }

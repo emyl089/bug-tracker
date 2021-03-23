@@ -1,27 +1,21 @@
 package sample;
 
-import javafx.beans.Observable;
-import javafx.beans.property.ReadOnlyIntegerWrapper;
-import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ResourceBundle;
 
 public class BugTrackerController implements Initializable {
@@ -33,9 +27,11 @@ public class BugTrackerController implements Initializable {
     @FXML
     private Button closeButton;
     @FXML
-    private ScrollPane dashboardScrollpane;
+    private ScrollPane dashboardScrollPane;
     @FXML
-    private ScrollPane issuesScrollpane;
+    private ScrollPane issuesScrollPane;
+    @FXML
+    private AnchorPane newEntryAnchorPane;
     @FXML
     private ImageView applicationImageView;
     @FXML
@@ -71,6 +67,7 @@ public class BugTrackerController implements Initializable {
     @FXML
     private TableColumn<Issues, String> reproducibleTableColumn;
 
+    private ObservableList<Issues> issuesObservableList = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -80,30 +77,42 @@ public class BugTrackerController implements Initializable {
         initiateBarChart();
         initiateTable();
 
-        //Add columns to the Table View
-        issuesTableColumn.setCellValueFactory(cellData -> cellData.getValue().issueNameProperty());
-        createdTableColumn.setCellValueFactory(cellData -> cellData.getValue().createTimeProperty());
-        reporterTableColumn.setCellValueFactory(cellData -> cellData.getValue().reporterNameProperty());
-        dueTableColumn.setCellValueFactory(cellData -> cellData.getValue().dueTimeProperty());
-        statusTableColumn.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
-        severityTableColumn.setCellValueFactory(cellData -> cellData.getValue().severityProperty());
-        reproducibleTableColumn.setCellValueFactory(cellData -> cellData.getValue().reproducibleProperty());
+        //Change Scroll Pane scrolling speed
+        final double SPEED = 0.01;
+        dashboardScrollPane.getContent().setOnScroll(scrollEvent -> {
+            double deltaY = scrollEvent.getDeltaY() * SPEED;
+            dashboardScrollPane.setVvalue(dashboardScrollPane.getVvalue() - deltaY);
+        });
+        issuesScrollPane.getContent().setOnScroll(scrollEvent -> {
+            double deltaY = scrollEvent.getDeltaY() * SPEED;
+            issuesScrollPane.setVvalue(issuesScrollPane.getVvalue() - deltaY);
+        });
     }
 
     //-----------------------------
     //Action when dashboardButton is pressed.
     //-----------------------------
     public void dashboardButtonOnAction() {
-        dashboardScrollpane.setVisible(true);
-        issuesScrollpane.setVisible(false);
+        dashboardScrollPane.setVisible(true);
+        issuesScrollPane.setVisible(false);
+    }
+
+    //-----------------------------
+    //Action when newEntryButton is pressed.
+    //-----------------------------
+    public void newEntryButtonOnAction() {
+        if(newEntryAnchorPane.isVisible())
+            newEntryAnchorPane.setVisible(false);
+        else
+            newEntryAnchorPane.setVisible(true);
     }
 
     //-----------------------------
     //Action when issuesButton is pressed.
     //-----------------------------
     public void issuesButtonOnAction() {
-        dashboardScrollpane.setVisible(false);
-        issuesScrollpane.setVisible(true);
+        dashboardScrollPane.setVisible(false);
+        issuesScrollPane.setVisible(true);
     }
 
     //-----------------------------
@@ -185,22 +194,46 @@ public class BugTrackerController implements Initializable {
     // Initiate Issues Table
     //-----------------------------
     public void initiateTable() {
-        //Add rows to the Table View
-        issuesTableView.getItems().addAll(getIssuesList());
         //Set placeholder for empty table
         issuesTableView.setPlaceholder(new Label("No visible columns and/or data exist."));
-    }
-    //-----------------------------
-    //Returns an observable list of Issues
-    //-----------------------------
-    public static ObservableList<Issues> getIssuesList()
-    {
-        ObservableList<Issues> issues = FXCollections.observableArrayList();
 
-        issues.add(new Issues("Feed Issue","12-03-2021","John Wick","14-03-2021","In Progress","Major","Always"));
-        issues.add(new Issues("Logistic Delay","10-03-2021","Tony Stark","21-03-2021","Open","Minor","Always"));
-        issues.add(new Issues("UI Not Responding","11-03-2021","Thor Odinson","13-03-2021","In Progress","Critical","Sometimes"));
+        //Set cells value from Issues model
+        issuesTableView.setItems(issuesObservableList);
 
-        return issues;
+        issuesTableColumn.setCellValueFactory(data -> data.getValue().issueNameProperty());
+        createdTableColumn.setCellValueFactory(data -> data.getValue().createTimeProperty());
+        reporterTableColumn.setCellValueFactory(data -> data.getValue().reporterNameProperty());
+        dueTableColumn.setCellValueFactory(data -> data.getValue().dueTimeProperty());
+        statusTableColumn.setCellValueFactory(data -> data.getValue().statusProperty());
+        severityTableColumn.setCellValueFactory(data -> data.getValue().severityProperty());
+        reproducibleTableColumn.setCellValueFactory(data -> data.getValue().reproducibleProperty());
+
+        //Make connection to database and get selected data
+        try {
+            DatabaseConnection connectNow = new DatabaseConnection();
+            Connection connectDB = connectNow.getConnection();
+
+            String query = "SELECT * FROM issues";
+
+            Statement statement = connectDB.createStatement();
+            ResultSet queryResult = statement.executeQuery(query);
+
+            while(queryResult.next()) {
+                issuesObservableList.add(new Issues(
+                        queryResult.getString("issue_name"),
+                        queryResult.getString("create_time"),
+                        queryResult.getString("reporter_name"),
+                        queryResult.getString("due_time"),
+                        queryResult.getString("status"),
+                        queryResult.getString("severity"),
+                        queryResult.getString("reproducible")
+                        )
+                );
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
     }
 }
