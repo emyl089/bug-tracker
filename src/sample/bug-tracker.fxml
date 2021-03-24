@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -14,9 +15,11 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
@@ -53,7 +56,7 @@
             <Button fx:id="dashboardButton" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#dashboardButtonOnAction" prefHeight="100.0" prefWidth="100.0" stylesheets="@button-side-panel.css" text="Dashboard" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
             <Button fx:id="newEntryButton" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutY="100.0" mnemonicParsing="false" onAction="#newEntryButtonOnAction" prefHeight="100.0" prefWidth="100.0" stylesheets="@button-side-panel.css" text="New Entry" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="100.0" />
             <Button fx:id="issuesButton" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutY="200.0" mnemonicParsing="false" onAction="#issuesButtonOnAction" prefHeight="100.0" prefWidth="100.0" stylesheets="@button-side-panel.css" text="Issues" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="200.0" />
-            <Button fx:id="adminButton" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutY="295.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" stylesheets="@button-side-panel.css" text="Admin" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="300.0" />
+            <Button fx:id="adminButton" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutY="295.0" mnemonicParsing="false" onAction="#adminButtonOnAction" prefHeight="100.0" prefWidth="100.0" stylesheets="@button-side-panel.css" text="Admin" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="300.0" />
          </children>
       </AnchorPane>
       <ScrollPane fx:id="dashboardScrollPane" focusTraversable="false" hbarPolicy="NEVER" layoutX="100.0" layoutY="50.0" prefWidth="922.0" style="-fx-background-color: #e6e9ed;" stylesheets="@scroll-pane.css" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
@@ -354,6 +357,175 @@
             <Label fx:id="entrySuccessMessageLabel" layoutX="183.0" layoutY="462.0" text="New issue added successfully!" textFill="#0001ff">
                <font>
                   <Font name="System Italic" size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="adminAnchorPane" layoutX="100.0" layoutY="50.0" prefHeight="590.0" prefWidth="924.0" style="-fx-background-color: #e6e9ed;" visible="false" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <ImageView fx:id="userProfileImage" fitHeight="150.0" fitWidth="200.0" layoutX="70.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="70.0" AnchorPane.topAnchor="30.0">
+               <image>
+                  <Image url="@../../images/login/login-account-icon.png" />
+               </image>
+               <effect>
+                  <Glow />
+               </effect>
+            </ImageView>
+            <Label layoutX="25.0" layoutY="190.0" text="Popescu Emanuel" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="190.0">
+               <font>
+                  <Font name="Arial Black" size="24.0" />
+               </font>
+               <effect>
+                  <Glow />
+               </effect>
+            </Label>
+            <AnchorPane layoutX="25.0" layoutY="270.0" prefHeight="300.0" prefWidth="450.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="270.0">
+               <children>
+                  <TableView fx:id="usersTableView" prefHeight="300.0" prefWidth="450.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <columns>
+                      <TableColumn fx:id="firstNameTableColumn" minWidth="50.0" prefWidth="112.5" text="First name" />
+                        <TableColumn fx:id="lastNameTableColumn" minWidth="50.0" prefWidth="112.5" text="Last name" />
+                      <TableColumn fx:id="emailTableColumn" minWidth="50.0" prefWidth="112.5" text="E-Mail" />
+                        <TableColumn fx:id="phoneTableColumn" minWidth="50.0" prefWidth="112.5" text="Phone" />
+                    </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+            <Label layoutX="320.0" layoutY="30.0" text="Assigned projects:" AnchorPane.topAnchor="30.0">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="320.0" layoutY="60.0" text="Bugs" AnchorPane.topAnchor="60.0">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="320.0" layoutY="90.0" text="Opened" AnchorPane.topAnchor="90.0" />
+            <Label layoutX="320.0" layoutY="120.0" text="In progress" AnchorPane.topAnchor="120.0" />
+            <Label layoutX="320.0" layoutY="150.0" text="Closed" AnchorPane.topAnchor="150.0" />
+            <Label layoutX="430.0" layoutY="90.0" text="12" textFill="#80ea3a" AnchorPane.topAnchor="90.0">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="430.0" layoutY="120.0" text="5" textFill="#ff5555" AnchorPane.topAnchor="120.0">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="430.0" layoutY="150.0" text="7" textFill="#2193eb" AnchorPane.topAnchor="150.0">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <AnchorPane layoutX="500.0" layoutY="70.0" prefHeight="500.0" prefWidth="400.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="500.0" AnchorPane.topAnchor="70.0">
+               <children>
+                  <VBox layoutX="5.0" layoutY="5.0" prefHeight="490.0" prefWidth="390.0" spacing="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
+                     <children>
+                        <Pane prefWidth="190.0" style="-fx-background-color: #e6e9ed;">
+                           <children>
+                              <Label layoutX="20.0" layoutY="15.0" text="New bug added">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="20.0" layoutY="40.0" text="User">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="20.0" layoutY="65.0" text="Bug">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="50.0" layoutY="40.0" text="Popescu Emanuel" />
+                              <Label layoutX="50.0" layoutY="65.0" maxWidth="330.0" text="Charts not showing correct informations." />
+                              <Label layoutX="250.0" layoutY="40.0" text="Date">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="285.0" layoutY="40.0" text="24-03-2021">
+                                 <font>
+                                    <Font name="System Italic" size="12.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets bottom="15.0" />
+                           </padding>
+                        </Pane>
+                        <Pane layoutX="10.0" layoutY="10.0" prefWidth="190.0" style="-fx-background-color: #e6e9ed;">
+                           <children>
+                              <Label layoutX="20.0" layoutY="15.0" text="New bug added">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="20.0" layoutY="40.0" text="User">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="20.0" layoutY="65.0" text="Bug">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="50.0" layoutY="40.0" text="Thor Odinson" />
+                              <Label layoutX="50.0" layoutY="65.0" maxWidth="330.0" text="Can't insert data into Issues table." />
+                              <Label layoutX="250.0" layoutY="40.0" text="Date">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="285.0" layoutY="40.0" text="24-03-2021">
+                                 <font>
+                                    <Font name="System Italic" size="12.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets bottom="15.0" />
+                           </padding>
+                        </Pane>
+                        <Pane layoutX="10.0" layoutY="120.0" prefWidth="190.0" style="-fx-background-color: #e6e9ed;">
+                           <children>
+                              <Label layoutX="20.0" layoutY="15.0" text="New user registered">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="20.0" layoutY="40.0" text="User">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="50.0" layoutY="40.0" text="Tony Stark" />
+                              <Label layoutX="250.0" layoutY="40.0" text="Date">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="285.0" layoutY="40.0" text="23-03-2021">
+                                 <font>
+                                    <Font name="System Italic" size="12.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets bottom="15.0" />
+                           </padding>
+                        </Pane>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+            <Label layoutX="500.0" layoutY="30.0" text="Feed" AnchorPane.leftAnchor="500.0" AnchorPane.topAnchor="30.0">
+               <font>
+                  <Font name="System Bold" size="18.0" />
                </font>
             </Label>
          </children>

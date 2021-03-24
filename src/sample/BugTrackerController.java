@@ -31,6 +31,8 @@ public class BugTrackerController implements Initializable {
     @FXML
     private AnchorPane newEntryAnchorPane;
     @FXML
+    private AnchorPane adminAnchorPane;
+    @FXML
     private ImageView applicationImageView;
     @FXML
     private ImageView closeImageView;
@@ -43,6 +45,8 @@ public class BugTrackerController implements Initializable {
     @FXML
     private ImageView weeklyRefreshImageView;
     @FXML
+    private ImageView userProfileImage;
+    @FXML
     private PieChart issuesChart;
     @FXML
     private PieChart milestoneChart;
@@ -50,6 +54,8 @@ public class BugTrackerController implements Initializable {
     private BarChart barChart;
     @FXML
     private TableView<Issues> issuesTableView;
+    @FXML
+    private TableView<Users> usersTableView;
     @FXML
     private TableColumn<Issues, String> issuesTableColumn;
     @FXML
@@ -64,6 +70,14 @@ public class BugTrackerController implements Initializable {
     private TableColumn<Issues, String> severityTableColumn;
     @FXML
     private TableColumn<Issues, String> reproducibleTableColumn;
+    @FXML
+    private TableColumn<Users, String> firstNameTableColumn;
+    @FXML
+    private TableColumn<Users, String> lastNameTableColumn;
+    @FXML
+    private TableColumn<Users, String> phoneTableColumn;
+    @FXML
+    private TableColumn<Users, String> emailTableColumn;
     @FXML
     private TextField issueNameTextField;
     @FXML
@@ -88,7 +102,7 @@ public class BugTrackerController implements Initializable {
     private Label entrySuccessMessageLabel;
 
     private ObservableList<Issues> issuesObservableList = FXCollections.observableArrayList();
-    private ObservableList<String> usersObservableList = FXCollections.observableArrayList();
+    private ObservableList<Users> usersObservableList = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -105,6 +119,7 @@ public class BugTrackerController implements Initializable {
         initiateBarChart();
         initiateTable();
         initiateNewEntry();
+        initiateUsersTable();
 
         //Change Scroll Pane scrolling speed
         final double SPEED = 0.01;
@@ -124,6 +139,7 @@ public class BugTrackerController implements Initializable {
     public void dashboardButtonOnAction() {
         dashboardScrollPane.setVisible(true);
         issuesScrollPane.setVisible(false);
+        adminAnchorPane.setVisible(false);
     }
 
     //-----------------------------
@@ -143,6 +159,16 @@ public class BugTrackerController implements Initializable {
     public void issuesButtonOnAction() {
         dashboardScrollPane.setVisible(false);
         issuesScrollPane.setVisible(true);
+        adminAnchorPane.setVisible(false);
+    }
+
+    //-----------------------------
+    //Action when adminButton is pressed.
+    //-----------------------------
+    public void adminButtonOnAction() {
+        dashboardScrollPane.setVisible(false);
+        issuesScrollPane.setVisible(false);
+        adminAnchorPane.setVisible(true);
     }
 
     //-----------------------------
@@ -193,6 +219,10 @@ public class BugTrackerController implements Initializable {
         milestoneRefreshImageView.setImage(issuesRefreshImageIcon);
         topFixersRefreshImageView.setImage(issuesRefreshImageIcon);
         weeklyRefreshImageView.setImage(issuesRefreshImageIcon);
+
+        File profileLogoFile = new File("images/login/login-account-icon.png");
+        Image profileLogoImage = new Image(profileLogoFile.toURI().toString());
+        userProfileImage.setImage(profileLogoImage);
     }
     public void initiateIssuesPieChart() {
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
@@ -288,7 +318,54 @@ public class BugTrackerController implements Initializable {
             e.getCause();
         }
     }
+    //-----------------------------
+    // Initiate Users Table
+    //-----------------------------
+    public void initiateUsersTable() {
+        //Set placeholder for empty table
+        usersTableView.setPlaceholder(new Label("No visible columns and/or data exist."));
 
+        //Set cells value from Issues model
+        usersTableView.setItems(usersObservableList);
+
+        firstNameTableColumn.setCellValueFactory(data -> data.getValue().firstNameProperty());
+        lastNameTableColumn.setCellValueFactory(data -> data.getValue().lastNameProperty());
+        emailTableColumn.setCellValueFactory(data -> data.getValue().emailProperty());
+        phoneTableColumn.setCellValueFactory(data -> data.getValue().phoneProperty());
+
+        //Make connection to database and get selected data
+        try {
+            DatabaseConnection connectNow = new DatabaseConnection();
+            Connection connectDB = connectNow.getConnection();
+
+            String query1 = "SELECT * FROM user_account";
+
+            Statement statement1 = connectDB.createStatement();
+            ResultSet queryResult1 = statement1.executeQuery(query1);
+
+            String query2 = "SELECT * FROM user_info";
+
+            Statement statement2 = connectDB.createStatement();
+            ResultSet queryResult2 = statement2.executeQuery(query2);
+
+            while(queryResult1.next() && queryResult2.next()) {
+                usersObservableList.add(new Users(
+                        queryResult1.getString("username"),
+                        queryResult1.getString("password"),
+                        queryResult1.getString("email"),
+                        queryResult2.getString("firstname"),
+                        queryResult2.getString("lastname"),
+                        queryResult2.getString("phone_number"),
+                        queryResult2.getString("gender")
+                        )
+                );
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
+    }
     //-----------------------------
     // Initiate New Entry
     //-----------------------------
@@ -330,6 +407,7 @@ public class BugTrackerController implements Initializable {
                 "Sometimes"
         );
     }
+
     //-----------------------------
     // Add new Issue
     //-----------------------------
