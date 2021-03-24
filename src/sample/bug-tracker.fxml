@@ -280,8 +280,9 @@
                         <TableColumn fx:id="reproducibleTableColumn" prefWidth="150.0" text="IS IT REPRODUCIBLE" />
                     </columns>
                   </TableView>
-                  <Button layoutX="740.0" layoutY="18.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="90.0" stylesheets="@button-inside.css" text="Submit issue" AnchorPane.leftAnchor="740.0" AnchorPane.topAnchor="18.0" />
+                  <Button layoutX="740.0" layoutY="18.0" mnemonicParsing="false" onAction="#newEntryButtonOnAction" prefHeight="35.0" prefWidth="90.0" stylesheets="@button-inside.css" text="Submit issue" AnchorPane.leftAnchor="740.0" AnchorPane.topAnchor="18.0" />
                   <Button layoutX="845.0" layoutY="18.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="35.0" stylesheets="@button-inside.css" text="..." AnchorPane.leftAnchor="845.0" AnchorPane.topAnchor="18.0" />
+                  <Button layoutX="660.0" layoutY="18.0" mnemonicParsing="false" onAction="#refreshButtonOnAction" prefHeight="35.0" prefWidth="60.0" stylesheets="@button-inside.css" text="Refresh" />
                </children>
             </AnchorPane>
         </content>
@@ -323,8 +324,38 @@
                </font>
             </Label>
             <ComboBox fx:id="reproducibleComboBox" layoutX="250.0" layoutY="330.0" prefWidth="150.0" promptText="Not selected" />
-            <Button fx:id="newEntryAddButton" layoutX="105.0" layoutY="511.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="90.0" stylesheets="@button-inside.css" text="Add" />
-            <Button fx:id="newEntryCancelButton" layoutX="315.0" layoutY="510.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="90.0" stylesheets="@button-inside.css" text="Cancel" />
+            <Button fx:id="newEntryAddButton" layoutX="105.0" layoutY="511.0" mnemonicParsing="false" onAction="#addEntryButtonOnAction" prefHeight="35.0" prefWidth="90.0" stylesheets="@button-inside.css" text="Add" />
+            <Button fx:id="newEntryCancelButton" layoutX="315.0" layoutY="510.0" mnemonicParsing="false" onAction="#cancelEntryButtonOnAction" prefHeight="35.0" prefWidth="90.0" stylesheets="@button-inside.css" text="Cancel" />
+            <Label fx:id="issueNameMessageLabel" layoutX="110.0" layoutY="80.0" text="Insert a title" textFill="RED">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="reporterNameMessageLabel" layoutX="110.0" layoutY="180.0" text="Assign the issue" textFill="RED">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="dueMessageLabel" layoutX="315.0" layoutY="180.0" text="Select a date" textFill="RED">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="severityMessageLabel" layoutX="100.0" layoutY="300.0" text="Select severity" textFill="RED">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="reproducibleMessageLabel" layoutX="350.0" layoutY="300.0" text="Select reproducibility" textFill="RED">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="entrySuccessMessageLabel" layoutX="183.0" layoutY="462.0" text="New issue added successfully!" textFill="#0001ff">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </children>

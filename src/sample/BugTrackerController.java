@@ -21,11 +21,9 @@ import java.util.ResourceBundle;
 public class BugTrackerController implements Initializable {
 
     @FXML
-    private Button dashboardButton;
-    @FXML
-    private Button issuesButton;
-    @FXML
     private Button closeButton;
+    @FXML
+    private Button newEntryAddButton;
     @FXML
     private ScrollPane dashboardScrollPane;
     @FXML
@@ -66,16 +64,47 @@ public class BugTrackerController implements Initializable {
     private TableColumn<Issues, String> severityTableColumn;
     @FXML
     private TableColumn<Issues, String> reproducibleTableColumn;
+    @FXML
+    private TextField issueNameTextField;
+    @FXML
+    private ComboBox reporterNameComboBox;
+    @FXML
+    private ComboBox severityComboBox;
+    @FXML
+    private ComboBox reproducibleComboBox;
+    @FXML
+    private DatePicker dueDatePicker;
+    @FXML
+    private Label issueNameMessageLabel;
+    @FXML
+    private Label reporterNameMessageLabel;
+    @FXML
+    private Label dueMessageLabel;
+    @FXML
+    private Label severityMessageLabel;
+    @FXML
+    private Label reproducibleMessageLabel;
+    @FXML
+    private Label entrySuccessMessageLabel;
 
     private ObservableList<Issues> issuesObservableList = FXCollections.observableArrayList();
+    private ObservableList<String> usersObservableList = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        issueNameMessageLabel.setText("");
+        reporterNameMessageLabel.setText("");
+        dueMessageLabel.setText("");
+        severityMessageLabel.setText("");
+        reproducibleMessageLabel.setText("");
+        entrySuccessMessageLabel.setText("");
+
         initiateImages();
         initiateIssuesPieChart();
         initiateMilestonePieChart();
         initiateBarChart();
         initiateTable();
+        initiateNewEntry();
 
         //Change Scroll Pane scrolling speed
         final double SPEED = 0.01;
@@ -105,6 +134,7 @@ public class BugTrackerController implements Initializable {
             newEntryAnchorPane.setVisible(false);
         else
             newEntryAnchorPane.setVisible(true);
+        newEntryAddButton.setDisable(false);
     }
 
     //-----------------------------
@@ -121,6 +151,28 @@ public class BugTrackerController implements Initializable {
     public void closeButtonOnAction() {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
+    }
+
+    //-----------------------------
+    //Action when New Entry addEntryButton is pressed.
+    //-----------------------------
+    public void addEntryButtonOnAction() {
+        addNewIssue();
+    }
+
+    //-----------------------------
+    //Action when New Entry cancelButton is pressed.
+    //-----------------------------
+    public void cancelEntryButtonOnAction() {
+        newEntryAnchorPane.setVisible(false);
+    }
+
+    //-----------------------------
+    //Action when New Entry cancelButton is pressed.
+    //-----------------------------
+    public void refreshButtonOnAction() {
+        issuesTableView.getItems().clear();
+        initiateTable();
     }
 
     //-----------------------------
@@ -234,6 +286,111 @@ public class BugTrackerController implements Initializable {
         catch (Exception e) {
             e.printStackTrace();
             e.getCause();
+        }
+    }
+
+    //-----------------------------
+    // Initiate New Entry
+    //-----------------------------
+    public void initiateNewEntry() {
+        //Add People to Assign Combo Box
+        try {
+            DatabaseConnection connectNow = new DatabaseConnection();
+            Connection connectDB = connectNow.getConnection();
+
+            String query = "SELECT * FROM user_info";
+
+            Statement statement = connectDB.createStatement();
+            ResultSet queryResult = statement.executeQuery(query);
+
+            while(queryResult.next()) {
+                String firstname = queryResult.getString("firstname");
+                String lastname = queryResult.getString("lastname");
+
+                reporterNameComboBox.getItems().add(firstname + " " + lastname);
+            }
+
+            connectDB.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
+
+        //Severity ComboBox
+        severityComboBox.getItems().addAll(
+                "Minor",
+                "Major",
+                "Critical"
+        );
+
+        //Reproducible ComboBox
+        reproducibleComboBox.getItems().addAll(
+                "Always",
+                "Sometimes"
+        );
+    }
+    //-----------------------------
+    // Add new Issue
+    //-----------------------------
+    public void addNewIssue() {
+        //Connect to database
+        DatabaseConnection connectionNow = new DatabaseConnection();
+        Connection connectDB = connectionNow.getConnection();
+
+        //Create SQL code
+        String issueName = issueNameTextField.getText();
+        String reporterName = reporterNameComboBox.getValue().toString();
+        String dueTime = dueDatePicker.getValue().toString();
+        String status = "Open";
+        String severity = severityComboBox.getValue().toString();
+        String reproducible = reproducibleComboBox.getValue().toString();
+
+        String insertToIssues = "INSERT INTO issues (issue_name, reporter_name, due_time, status, severity, reproducible) " +
+                "VALUES ('" + issueName + "','" + reporterName + "','" + dueTime + "','" + status + "','" + severity + "','" + reproducible + "');";
+
+        //Add new issue information to database
+        if (!issueName.equals("")) {
+            issueNameMessageLabel.setText("");
+            if (!reporterName.equals("")) {
+                reporterNameMessageLabel.setText("");
+                if (!dueTime.equals("")) {
+                    dueMessageLabel.setText("");
+                    if (!severity.equals("")) {
+                        severityMessageLabel.setText("");
+                        if (!reproducible.equals("")) {
+                            reproducibleMessageLabel.setText("");
+                            try {
+                                Statement statement = connectDB.createStatement();
+                                statement.executeUpdate(insertToIssues);
+
+                                refreshButtonOnAction();
+
+                                entrySuccessMessageLabel.setText("New issue added successfully!");
+                                newEntryAddButton.setDisable(true);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                e.getCause();
+                            }
+                        }
+                        else {
+                            reproducibleMessageLabel.setText("Select reproducibility.");
+                        }
+                    }
+                    else{
+                            severityMessageLabel.setText("Select severity.");
+                        }
+                    }
+                else {
+                    dueMessageLabel.setText("Select a date.");
+                }
+            }
+            else {
+                reporterNameMessageLabel.setText("Assign the issue.");
+            }
+        }
+        else {
+            issueNameMessageLabel.setText("Insert a title.");
         }
     }
 }
