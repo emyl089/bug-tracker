@@ -14,9 +14,14 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 public class BugTrackerController implements Initializable {
 
@@ -100,6 +105,20 @@ public class BugTrackerController implements Initializable {
     private Label reproducibleMessageLabel;
     @FXML
     private Label entrySuccessMessageLabel;
+    @FXML
+    private Label totalIssuesLabel;
+    @FXML
+    private Label openIssuesLabel;
+    @FXML
+    private Label closedIssuesLabel;
+    @FXML
+    private Label projectStartDateLabel;
+    @FXML
+    private Label projectDueDateLabel;
+    @FXML
+    private Label projectDelayLabel;
+    @FXML
+    private ProgressIndicator projectProgressIndicator;
 
     private ObservableList<Issues> issuesObservableList = FXCollections.observableArrayList();
     private ObservableList<Users> usersObservableList = FXCollections.observableArrayList();
@@ -131,6 +150,10 @@ public class BugTrackerController implements Initializable {
             double deltaY = scrollEvent.getDeltaY() * SPEED;
             issuesScrollPane.setVvalue(issuesScrollPane.getVvalue() - deltaY);
         });
+
+        delayTime();
+
+        projectProgressIndicator.setProgress(0.37F);
     }
 
     //-----------------------------
@@ -204,6 +227,7 @@ public class BugTrackerController implements Initializable {
     //-----------------------------
     //Initializations
     //-----------------------------
+    //Images initializations
     public void initiateImages() {
         File applicationImageFile = new File("images/bug-tracker/bug.png");
         Image applicationImageIcon = new Image(applicationImageFile.toURI().toString());
@@ -224,20 +248,46 @@ public class BugTrackerController implements Initializable {
         Image profileLogoImage = new Image(profileLogoFile.toURI().toString());
         userProfileImage.setImage(profileLogoImage);
     }
+    //Issues PieChart initializations
     public void initiateIssuesPieChart() {
+        int totalIssues = 0;
+        try {
+            totalIssues = num("");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        int openedIssues = 0;
+        try {
+            openedIssues = num("Open");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        int closedIssues = 0;
+        try {
+            closedIssues = num("Closed");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-                new PieChart.Data("Open", 18),
-                new PieChart.Data("Closed", 12)
+                new PieChart.Data("Open", openedIssues),
+                new PieChart.Data("Closed", closedIssues)
         );
         issuesChart.setData(pieChartData);
+
+        openIssuesLabel.setText(Integer.toString(openedIssues));
+        closedIssuesLabel.setText(Integer.toString(closedIssues));
+        totalIssuesLabel.setText(Integer.toString(totalIssues));
     }
+    //Milestone PieChart initializations
     public void initiateMilestonePieChart() {
         ObservableList<PieChart.Data> milestoneChartData = FXCollections.observableArrayList(
-                new PieChart.Data("Open", 15),
-                new PieChart.Data("Closed", 5)
+                new PieChart.Data("Open", 2),
+                new PieChart.Data("Closed", 1)
         );
         milestoneChart.setData(milestoneChartData);
     }
+    //BarChart initializations
     public void initiateBarChart() {
         CategoryAxis xAxis = new CategoryAxis();
         NumberAxis yAxis = new NumberAxis();
@@ -245,28 +295,28 @@ public class BugTrackerController implements Initializable {
         yAxis.setLabel("Issues");
 
         XYChart.Series series1 = new XYChart.Series();
-        series1.setName("Week 1");
-        series1.getData().add(new XYChart.Data("austria", 25601.34));
-        series1.getData().add(new XYChart.Data("brazil", 20148.82));
-        series1.getData().add(new XYChart.Data("france", 10000));
-        series1.getData().add(new XYChart.Data("italy", 35407.15));
-        series1.getData().add(new XYChart.Data("usa", 12000));
+        series1.setName("Created");
+        series1.getData().add(new XYChart.Data("Monday", 4));
+        series1.getData().add(new XYChart.Data("Tuesday", 3));
+        series1.getData().add(new XYChart.Data("Wednesday", 7));
+        series1.getData().add(new XYChart.Data("Thursday", 2));
+        series1.getData().add(new XYChart.Data("Friday", 3));
 
         XYChart.Series series2 = new XYChart.Series();
-        series2.setName("Week 2");
-        series2.getData().add(new XYChart.Data("austria", 57401.85));
-        series2.getData().add(new XYChart.Data("brazil", 41941.19));
-        series2.getData().add(new XYChart.Data("france", 45263.37));
-        series2.getData().add(new XYChart.Data("italy", 117320.16));
-        series2.getData().add(new XYChart.Data("usa", 14845.27));
+        series2.setName("Completed");
+        series2.getData().add(new XYChart.Data("Monday", 3));
+        series2.getData().add(new XYChart.Data("Tuesday", 1));
+        series2.getData().add(new XYChart.Data("Wednesday", 2));
+        series2.getData().add(new XYChart.Data("Thursday", 8));
+        series2.getData().add(new XYChart.Data("Friday", 1));
 
         XYChart.Series series3 = new XYChart.Series();
-        series3.setName("Week 3");
-        series3.getData().add(new XYChart.Data("austria", 45000.65));
-        series3.getData().add(new XYChart.Data("brazil", 44835.76));
-        series3.getData().add(new XYChart.Data("france", 18722.18));
-        series3.getData().add(new XYChart.Data("italy", 17557.31));
-        series3.getData().add(new XYChart.Data("usa", 92633.68));
+        series3.setName("Still Open");
+        series3.getData().add(new XYChart.Data("Monday", 1));
+        series3.getData().add(new XYChart.Data("Tuesday", 3));
+        series3.getData().add(new XYChart.Data("Wednesday", 8));
+        series3.getData().add(new XYChart.Data("Thursday", 2));
+        series3.getData().add(new XYChart.Data("Friday", 4));
 
         barChart.getData().addAll(series1);
         barChart.getData().addAll(series2);
@@ -470,5 +520,54 @@ public class BugTrackerController implements Initializable {
         else {
             issueNameMessageLabel.setText("Insert a title.");
         }
+    }
+
+    //-----------------------------
+    // Count elements from Issues database
+    //-----------------------------
+    public int num(String statusQuery) throws Exception {
+        try {
+            DatabaseConnection connectNow = new DatabaseConnection();
+            Connection connectDB = connectNow.getConnection();
+
+            // Statements allow to issue SQL queries to the database
+            Statement statement = connectDB.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM issues WHERE status = '" + statusQuery + "'");
+
+            while (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
+        return 0;
+    }
+
+    //-----------------------------
+    // Project delay time
+    //-----------------------------
+    public void delayTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+
+        Date firstDate = null;
+        try {
+            firstDate = sdf.parse(projectStartDateLabel.getText());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Date secondDate = null;
+        try {
+            secondDate = sdf.parse(projectDueDateLabel.getText());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        long diffInMillis = Math.abs(secondDate.getTime() - firstDate.getTime());
+        long diff = TimeUnit.DAYS.convert(diffInMillis, TimeUnit.MILLISECONDS);
+
+        projectDelayLabel.setText("Delayed by " + diff + " days");
     }
 }

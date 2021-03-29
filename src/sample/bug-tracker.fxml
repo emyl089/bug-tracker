@@ -21,10 +21,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1024.0" style="-fx-background-color: #e6e9ed;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.BugTrackerController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1024.0" style="-fx-background-color: #e6e9ed;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.BugTrackerController">
    <children>
       <AnchorPane prefHeight="50.0" prefWidth="1024.0" style="-fx-background-color: #4287f5;">
          <children>
@@ -87,17 +88,17 @@
                         <Label layoutX="40.0" layoutY="250.0" text="Open" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="250.0" />
                         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="107.0" layoutY="250.0" text="Closed" AnchorPane.leftAnchor="107.0" AnchorPane.rightAnchor="107.0" AnchorPane.topAnchor="250.0" />
                         <Label layoutX="210.0" layoutY="250.0" text="Total" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="250.0" />
-                        <Label layoutX="47.0" layoutY="271.0" text="18" textFill="#80ea3a" AnchorPane.leftAnchor="47.0" AnchorPane.topAnchor="271.0">
+                        <Label fx:id="openIssuesLabel" layoutX="47.0" layoutY="271.0" text="18" textFill="#80ea3a" AnchorPane.leftAnchor="47.0" AnchorPane.topAnchor="271.0">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <Label layoutX="117.0" layoutY="271.0" text="12" textFill="#2193eb" AnchorPane.leftAnchor="117.0" AnchorPane.topAnchor="271.0">
+                        <Label fx:id="closedIssuesLabel" layoutX="117.0" layoutY="271.0" text="12" textFill="#2193eb" AnchorPane.leftAnchor="117.0" AnchorPane.topAnchor="271.0">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <Label layoutX="189.0" layoutY="271.0" text="30" AnchorPane.leftAnchor="189.0" AnchorPane.topAnchor="271.0">
+                        <Label fx:id="totalIssuesLabel" layoutX="189.0" layoutY="271.0" text="30" AnchorPane.leftAnchor="189.0" AnchorPane.topAnchor="271.0">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
@@ -129,22 +130,23 @@
                         <Label layoutX="41.0" layoutY="257.0" text="Open" />
                         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="108.0" layoutY="257.0" text="Closed" />
                         <Label layoutX="185.0" layoutY="257.0" text="Total" />
-                        <Label layoutX="48.0" layoutY="278.0" text="18" textFill="#80ea3a">
+                        <Label layoutX="48.0" layoutY="278.0" text="2" textFill="#80ea3a">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <Label layoutX="118.0" layoutY="278.0" text="12" textFill="#2193eb">
+                        <Label layoutX="118.0" layoutY="278.0" text="1" textFill="#2193eb">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <Label layoutX="190.0" layoutY="278.0" text="30">
+                        <Label layoutX="190.0" layoutY="278.0" text="3">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
                         <PieChart fx:id="milestoneChart" labelsVisible="false" layoutX="25.0" layoutY="62.0" legendVisible="false" prefHeight="185.0" prefWidth="200.0" stylesheets="@pie-chart.css" AnchorPane.leftAnchor="26.0" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="64.0" />
+                        <Circle fill="WHITE" layoutX="134.0" layoutY="157.0" radius="55.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
                      </children></AnchorPane>
                   <AnchorPane layoutX="630.0" layoutY="100.0" prefHeight="300.0" prefWidth="250.0" style="-fx-background-color: white;" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="100.0">
                      <children>
@@ -217,7 +219,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <BarChart fx:id="barChart" horizontalGridLinesVisible="false" layoutX="14.0" layoutY="72.0" legendSide="RIGHT" prefHeight="200.0" prefWidth="500.0" verticalGridLinesVisible="false">
+                        <BarChart fx:id="barChart" horizontalGridLinesVisible="false" layoutX="14.0" layoutY="72.0" legendSide="RIGHT" prefHeight="200.0" prefWidth="500.0" stylesheets="@bar-chart.css" verticalGridLinesVisible="false">
                           <xAxis>
                             <CategoryAxis side="BOTTOM" />
                           </xAxis>
@@ -226,7 +228,7 @@
                           </yAxis>
                         </BarChart>
                      </children></AnchorPane>
-                  <ProgressIndicator layoutX="30.0" layoutY="25.0" progress="0.0" />
+                  <ProgressIndicator fx:id="projectProgressIndicator" layoutX="30.0" layoutY="25.0" progress="0.0" />
                   <Label layoutX="70.0" layoutY="20.0" text="PR-1:" textFill="#575757" />
                   <Label layoutX="120.0" layoutY="16.0" text="Bug Tracker Project">
                      <font>
@@ -242,17 +244,17 @@
                   <Label layoutX="550.0" layoutY="20.0" text="Start Date" textFill="#575757" />
                   <Label layoutX="650.0" layoutY="20.0" text="Due Date" textFill="#575757" />
                   <Label layoutX="750.0" layoutY="20.0" text="Time Lag" textFill="#575757" />
-                  <Label layoutX="550.0" layoutY="50.0" text="11-03-2021">
+                  <Label fx:id="projectStartDateLabel" layoutX="550.0" layoutY="50.0" text="11-03-2021">
                      <font>
                         <Font name="Arial Black" size="12.0" />
                      </font>
                   </Label>
-                  <Label layoutX="650.0" layoutY="50.0" text="21-03-2021">
+                  <Label fx:id="projectDueDateLabel" layoutX="650.0" layoutY="50.0" text="21-03-2021">
                      <font>
                         <Font name="Arial Black" size="12.0" />
                      </font>
                   </Label>
-                  <Label layoutX="750.0" layoutY="50.0" text="Delayed by 0 Days" textFill="#d71717">
+                  <Label fx:id="projectDelayLabel" layoutX="750.0" layoutY="50.0" text="Delayed by 0 Days" textFill="#d71717">
                      <font>
                         <Font name="Arial Bold" size="12.0" />
                      </font>
